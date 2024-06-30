@@ -1,5 +1,6 @@
 package com.example.java_spring_boot.dto.request;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -17,4 +18,7 @@ public class ProductRequest {
 
     @NotNull(message = "Creator id is undefined.")
     private Integer creatorId;
+
+    @Hidden
+    private boolean softDelete;
 }

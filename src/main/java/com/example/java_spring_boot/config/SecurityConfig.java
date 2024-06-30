@@ -1,5 +1,6 @@
 package com.example.java_spring_boot.config;
 
+import com.example.java_spring_boot.enums.UserAuthorityEnum;
 import com.example.java_spring_boot.filter.JwtAuthenticationFilter;
 import com.example.java_spring_boot.service.Impl.LoginServiceImpl;
 import io.jsonwebtoken.Jwts;
@@ -33,15 +34,12 @@ public class SecurityConfig {
     )throws Exception {
         return http
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority(UserAuthorityEnum.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/users/*").authenticated()
+                        .requestMatchers(HttpMethod.GET).permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users/?*").hasAnyAuthority("ADMIN", "NORNAL")
-                        .requestMatchers(HttpMethod.PATCH, "/users/?*").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/users/?*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/refreshAccessToken").permitAll()
                         .requestMatchers(HttpMethod.GET, "/parseToken").permitAll()
-                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

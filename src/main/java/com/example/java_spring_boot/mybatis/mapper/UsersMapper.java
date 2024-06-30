@@ -69,4 +69,24 @@ public interface UsersMapper {
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     int delete(String id);
+
+    @Select(
+            "<script>" +
+            "SELECT * FROM users WHERE authority IN " +
+            "<foreach collection='authorities' item='item' open='(' separator=',' close=')'> " +
+                "#{item}" +
+            "</foreach>" +
+            "</script>"
+    )
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "authority", column = "authority", javaType = UserAuthorityEnum.class),
+            @Result(property = "createBy", column = "create_by"),
+            @Result(property = "createDt", column = "create_dt"),
+            @Result(property = "lastModifiedBy", column = "last_modified_by"),
+            @Result(property = "lastModifiedDt", column = "last_modified_dt")
+    })
+    List<UsersEntity> findByAuthorityIn(@Param("authorities") List<UserAuthorityEnum> authorities);
 }
