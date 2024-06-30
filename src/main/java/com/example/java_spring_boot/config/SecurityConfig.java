@@ -34,7 +34,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users?*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/?*").hasAnyAuthority("ADMIN", "NORNAL")
                         .requestMatchers(HttpMethod.PATCH, "/users/?*").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/users/?*").permitAll()

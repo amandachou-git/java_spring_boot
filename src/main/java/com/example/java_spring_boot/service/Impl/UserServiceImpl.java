@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.java_spring_boot.enums.UserAuthorityEnum.ADMIN;
 
@@ -43,9 +45,15 @@ public class UserServiceImpl implements UsersService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponse> getAllUsers(List<UserAuthorityEnum> authorities) {
+
+        if (authorities == null || authorities.isEmpty()) {
+            authorities = Arrays.stream(UserAuthorityEnum.values())
+                    .collect(Collectors.toList());
+        }
+
         List<UserResponse> responses = new ArrayList<>();
-        List<UsersEntity> usersEntities = usersMapper.findAll();
+        List<UsersEntity> usersEntities = usersMapper.findByAuthorityIn(authorities);
 
         if (usersEntities.size() <= 0) {
             return responses;
