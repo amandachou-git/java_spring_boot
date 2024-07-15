@@ -15,8 +15,7 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         Info info = new Info()
                 .title("Java Spring Boot REST API")
-                .description("Spring Boot REST API for Java")
-                .version("1.0.0")
+                .version("Ver. 1.0.0")
                 .description("List of Java Spring Boot REST APIs");
 
         String securitySchemaName = "JWT Authentication";
